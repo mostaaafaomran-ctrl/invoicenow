@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>InvoiceNow | Free invoice and quote maker, Arabic and English, PDF</title>
+<meta name="description" content="Make a clean invoice or quote in EGP, USD or any currency. Arabic and English, RTL support, print to PDF. No signup, saved only in your browser.">
+<meta property="og:title" content="InvoiceNow">
+<meta property="og:description" content="Free invoice and quote maker for freelancers. Arabic + English, EGP/USD, print to PDF. No signup.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%236d3df5'/%3E%3Cpath d='M30 25h30l12 12v38H30z' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+:root{--p:#6d3df5;--p2:#a46bff;--bg:#f4f2fb;--tx:#1d1736;--dim:#6f6890}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Inter,"Segoe UI","Noto Sans Arabic",system-ui,sans-serif}
+.top{background:linear-gradient(120deg,var(--p),var(--p2));color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.top h1{margin:0;font-size:22px}.top small{opacity:.85;margin-inline-start:10px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bar select,.bar button{font:inherit;padding:8px 12px;border-radius:9px;border:0;cursor:pointer}
+.bar button.go{background:#fff;color:var(--p);font-weight:700}
+.bar select{background:#ffffff26;color:#fff}.bar select option{color:#000}
+.page{max-width:860px;margin:22px auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px #4a2fb022;padding:42px}
+.hd{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:28px}
+.title{font-size:38px;font-weight:800;color:var(--p);letter-spacing:-1px}
+.meta{display:grid;grid-template-columns:auto 150px;gap:6px 10px;align-items:center;font-size:14px}
+.meta span{color:var(--dim)}
+input,textarea{font:inherit;color:inherit;border:1px solid transparent;background:transparent;padding:5px 7px;border-radius:7px;width:100%}
+input:hover,textarea:hover{border-color:#ddd8f0;background:#faf9ff}
+input:focus,textarea:focus{outline:2px solid var(--p2);background:#fff}
+textarea{resize:none;min-height:64px}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-bottom:26px}
+.parties h4{margin:0 0 4px;color:var(--dim);font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+table{width:100%;border-collapse:collapse}
+th{background:var(--p);color:#fff;text-align:start;padding:9px 8px;font-size:13px}
+th:first-child{border-start-start-radius:9px}th:last-child{border-start-end-radius:9px}
+td{padding:4px 2px;border-bottom:1px solid #eeeaf8;vertical-align:middle}
+td.n input{text-align:end}
+td.t{text-align:end;font-weight:600;padding:4px 8px;white-space:nowrap}
+.rm{border:0;background:none;color:#c33;cursor:pointer;font-size:18px}
+.add{margin-top:10px;border:1.5px dashed var(--p2);background:none;color:var(--p);padding:8px 14px;border-radius:9px;cursor:pointer;font:inherit;font-weight:600}
+.sum{margin-top:22px;margin-inline-start:auto;width:300px}
+.sum div{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.sum input{width:70px;text-align:end}
+.sum .tot{border-top:2px solid var(--p);margin-top:6px;padding-top:10px;font-size:20px;font-weight:800;color:var(--p)}
+.notes{margin-top:26px}.notes h4{margin:0;color:var(--dim);font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+.foot{max-width:860px;margin:0 auto 30px;text-align:center;color:var(--dim);font-size:13px}
+.foot a{color:var(--p)}
+@media(max-width:640px){.page{padding:20px;margin:10px}.parties,.hd{grid-template-columns:1fr;flex-direction:column}.sum{width:100%}}
+@media print{body{background:#fff}.top,.foot,.add,.rm,th:last-child,td:last-child{display:none}.page{box-shadow:none;margin:0;padding:0;max-width:none}input:hover,textarea:hover{border-color:transparent;background:none}}
+</style>
+</head>
+<body>
+<div class="top"><div><h1 style="display:inline">InvoiceNow</h1><small>Invoices & quotes. No signup.</small></div>
+<div class="bar">
+<select id="type"><option value="invoice">Invoice</option><option value="quote">Quote</option></select>
+<select id="lang"><option value="en">English</option><option value="ar">العربية</option></select>
+<select id="cur"><option>EGP</option><option>USD</option><option>EUR</option><option>SAR</option><option>AED</option><option>GBP</option></select>
+<button class="go" id="print">Save as PDF</button></div></div>
+<div class="page" id="page">
+<div class="hd"><div><div class="title" id="ttl"></div><textarea id="from" rows="3" data-k="from"></textarea></div>
+<div class="meta"><span id="l-no"></span><input id="no" value="001"><span id="l-date"></span><input id="date" type="date"><span id="l-due"></span><input id="due" type="date"></div></div>
+<div class="parties"><div><h4 id="l-to"></h4><textarea id="to" rows="3"></textarea></div><div><h4 id="l-pay"></h4><textarea id="pay" rows="3"></textarea></div></div>
+<table><thead><tr><th id="h-d"></th><th id="h-q" style="width:70px"></th><th id="h-r" style="width:110px"></th><th id="h-t" style="width:110px;text-align:end"></th><th style="width:30px"></th></tr></thead><tbody id="rows"></tbody></table>
+<button class="add" id="add"></button>
+<div class="sum"><div><span id="l-sub"></span><b id="sub"></b></div><div><span id="l-tax"></span><input id="tax" type="number" min="0" value="0">%</div><div><span id="l-disc"></span><input id="disc" type="number" min="0" value="0">%</div><div class="tot"><span id="l-total"></span><span id="total"></span></div></div>
+<div class="notes"><h4 id="l-notes"></h4><textarea id="notes" rows="3"></textarea></div>
+</div>
+<div class="foot">Saved in your browser only. Use "Save as PDF" in the print dialog. · <a href="https://github.com/mostaaafaomran-ctrl/invoicenow">GitHub</a></div>
+<script src="core.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+var S=JSON.parse(localStorage.getItem('invoicenow')||'null')||{type:'invoice',lang:'en',cur:'EGP',from:'Your name\nyour@email.com\n+20 10 0000 0000',to:'Client name\nCompany\nCairo, Egypt',pay:'Bank: ...\nIBAN: ...\nInstapay: ...',no:'001',date:new Date().toISOString().slice(0,10),due:'',tax:0,disc:0,notes:'Thank you for your business.',rows:[{d:'Website design',q:1,r:5000},{d:'Logo and brand kit',q:1,r:1800}]};
+var TX=InvoiceNow.TEXT;
+function save(){localStorage.setItem('invoicenow',JSON.stringify(S))}
+function fmt(n){return InvoiceNow.money(n,S.cur,S.lang)}
+function render(){
+  var t=TX[S.lang];document.documentElement.lang=S.lang;$('page').dir=S.lang==='ar'?'rtl':'ltr';
+  $('ttl').textContent=S.type==='quote'?t.quote:t.invoice;
+  var m={'l-no':t.no,'l-date':t.date,'l-due':t.due,'l-to':t.to,'l-pay':t.pay,'h-d':t.desc,'h-q':t.qty,'h-r':t.rate,'h-t':t.amount,'l-sub':t.sub,'l-tax':t.tax,'l-disc':t.disc,'l-total':t.total,'l-notes':t.notes,add:t.add};
+  for(var k in m)$(k).textContent=m[k];
+  ['type','lang','cur'].forEach(function(k){$(k).value=S[k]});
+  ['from','to','pay','no','date','due','tax','disc','notes'].forEach(function(k){if($(k).value!==String(S[k]))$(k).value=S[k]});
+  $('rows').innerHTML='';
+  S.rows.forEach(function(r,i){var tr=document.createElement('tr');
+    tr.innerHTML='<td><input data-i="'+i+'" data-f="d"></td><td class="n"><input type="number" min="0" step="any" data-i="'+i+'" data-f="q"></td><td class="n"><input type="number" min="0" step="any" data-i="'+i+'" data-f="r"></td><td class="t" id="t'+i+'"></td><td><button class="rm" data-rm="'+i+'">×</button></td>';
+    $('rows').appendChild(tr);
+    ['d','q','r'].forEach(function(f){tr.querySelector('[data-f='+f+']').value=r[f]});
+  });
+  totals();
+}
+function totals(){
+  var c=InvoiceNow.calc(S.rows,S.tax,S.disc);
+  S.rows.forEach(function(r,i){var e=$('t'+i);if(e)e.textContent=fmt((+r.q||0)*(+r.r||0))});
+  $('sub').textContent=fmt(c.sub);$('total').textContent=fmt(c.total);
+}
+document.addEventListener('input',function(e){var el=e.target;
+  if(el.dataset.f){S.rows[el.dataset.i][el.dataset.f]=el.dataset.f==='d'?el.value:el.value;totals();save();return}
+  if(['from','to','pay','no','date','due','notes'].indexOf(el.id)>=0){S[el.id]=el.value;save()}
+  if(el.id==='tax'||el.id==='disc'){S[el.id]=+el.value||0;totals();save()}
+});
+['type','lang','cur'].forEach(function(k){$(k).onchange=function(){S[k]=$(k).value;save();render()}});
+document.addEventListener('click',function(e){var r=e.target.dataset.rm;if(r!==undefined){S.rows.splice(+r,1);save();render()}});
+$('add').onclick=function(){S.rows.push({d:'',q:1,r:0});save();render()};
+$('print').onclick=function(){window.print()};
+render();
+</script>
+</body>
+</html>
